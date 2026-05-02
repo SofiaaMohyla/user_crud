@@ -18,7 +18,6 @@ templates = Jinja2Templates(directory="templates")
 def users_page(request: Request, db: Session = Depends(get_db)):
     users = db.query(User).order_by(User.id).all()
     return templates.TemplateResponse(
-        request,
         "users.html",
         {"request": request, "users": users},
     )
