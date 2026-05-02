@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User CRUD</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        .page {
+            max-width: 760px;
+            margin: 40px auto;
+            padding: 24px;
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 28px;
+        }
+
+        form {
+            margin: 0;
+        }
+
+        .create-form {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .create-form {
+            margin-bottom: 16px;
+        }
+
+        .user-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .user-row {
+            padding: 12px;
+            border: 1px solid #ddd;
+            background: #fafafa;
+        }
+
+        .edit-form {
+            display: grid;
+            grid-template-columns: 80px 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #bbb;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 14px;
+            border: 0;
+            background: #222;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete {
+            background: #b42318;
+        }
+
+        .empty {
+            padding: 16px;
+            border: 1px dashed #bbb;
+            background: #fafafa;
+        }
+
+        @media (max-width: 640px) {
+            .create-form,
+            .edit-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>User CRUD</h1>
+
+        <form class="create-form" action="/users/create" method="post">
+            <div>Новий user</div>
+            <input type="text" name="name" placeholder="Ім'я" required>
+            <button type="submit">Додати</button>
+        </form>
+
+        <div class="user-list">
+            {% for user in users %}
+            <div class="user-row">
+                <form class="edit-form" action="/users/{{ user.id }}/update" method="post">
+                    <div>#{{ user.id }}</div>
+                    <input type="text" name="name" value="{{ user.name }}" required>
+                    <button type="submit">Зберегти</button>
+                </form>
+                <form action="/users/{{ user.id }}/delete" method="post" style="margin-top: 12px;">
+                    <button class="delete" type="submit">Видалити</button>
+                </form>
+            </div>
+            {% endfor %}
+
+            {% if not users %}
+            <div class="empty">Користувачів ще немає.</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
